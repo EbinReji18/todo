@@ -1,6 +1,6 @@
 import { Item } from "./Item.jsx";
 
-export function List({ todos, toggleTodo, deleteTodo }) {
+export function List({ todos, toggleTodo, deleteTodo, editTodo }) {
   return (
     <ul className="list">
       {todos.length === 0 && "No Todos"}
@@ -10,6 +10,7 @@ export function List({ todos, toggleTodo, deleteTodo }) {
           {...todo}
           toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}
+          editTodo={editTodo}
         />
       ))}
     </ul>

@@ -138,3 +138,14 @@ body {
 .list li:has(input:checked) label:hover::before {
   background: hsl(200, 100%, 30%);
 }
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.due-date {
+  font-size: 0.8rem;
+  color: hsl(200, 100%, 70%);
+}

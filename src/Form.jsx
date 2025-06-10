@@ -1,19 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 export function Form({ onSubmit }) {
   const [newItem, setNewItem] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const inputRef = useRef();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (newItem.trim() === "") return;
-
-    onSubmit(newItem.trim(), dueDate);
+    if (newItem === "") return;
+    onSubmit(newItem, dueDate);
     setNewItem("");
     setDueDate("");
   }
@@ -23,16 +17,15 @@ export function Form({ onSubmit }) {
       <div className="form-row">
         <label htmlFor="item">New Item</label>
         <input
-          ref={inputRef}
           value={newItem}
           onChange={e => setNewItem(e.target.value)}
           type="text"
           id="item"
+          placeholder="Enter task"
         />
       </div>
-
       <div className="form-row">
-        <label htmlFor="dueDate">Due Date (optional)</label>
+        <label htmlFor="dueDate">Due Date</label>
         <input
           value={dueDate}
           onChange={e => setDueDate(e.target.value)}
@@ -40,7 +33,6 @@ export function Form({ onSubmit }) {
           id="dueDate"
         />
       </div>
-
       <button className="btn">Add</button>
     </form>
   );

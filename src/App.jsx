@@ -10,17 +10,19 @@ export default function App() {
     return JSON.parse(localValue);
   });
 
+  const [filter, setFilter] = useState("all");
+
   useEffect(() => {
     localStorage.setItem("ITEMS", JSON.stringify(todos));
   }, [todos]);
 
-  function addTodo(newItem, dueDate) {
+  function addTodo(title, dueDate) {
     setTodos(currentTodos => [
       ...currentTodos,
       {
         id: crypto.randomUUID(),
-        title: newItem,
-        dueDate: dueDate || "",
+        title,
+        dueDate,
         completed: false
       }
     ]);
@@ -38,19 +40,43 @@ export default function App() {
     setTodos(currentTodos => currentTodos.filter(todo => todo.id !== id));
   }
 
+  function editTodo(id, newTitle) {
+    setTodos(currentTodos =>
+      currentTodos.map(todo =>
+        todo.id === id ? { ...todo, title: newTitle } : todo
+      )
+    );
+  }
+
   function clearTodos() {
     setTodos([]);
   }
+
+  const filteredTodos = todos
+    .filter(todo => {
+      if (filter === "active") return !todo.completed;
+      if (filter === "completed") return todo.completed;
+      return true;
+    })
+    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
   return (
     <div>
       <Form onSubmit={addTodo} />
       <br />
       <h1 className="header">Todo List</h1>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+      <div className="filters">
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("active")}>Active</button>
+        <button onClick={() => setFilter("completed")}>Completed</button>
         <button className="btn btn-danger" onClick={clearTodos}>Clear All</button>
       </div>
-      <List todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+      <List
+        todos={filteredTodos}
+        toggleTodo={toggleTodo}
+        deleteTodo={deleteTodo}
+        editTodo={editTodo}
+      />
     </div>
   );
 }
