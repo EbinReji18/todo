@@ -1,36 +1,30 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 export function Form({ onSubmit }) {
-  const [title, setTitle] = useState("");
+  const [newItem, setNewItem] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const ref = useRef();
 
-  useEffect(() => {
-    ref.current.focus();
-  }, []);
-
-  const handle = e => {
+  function handleSubmit(e) {
     e.preventDefault();
-    if (!title.trim()) return;
-    onSubmit(title.trim(), dueDate);
-    setTitle("");
+    if (newItem === "") return;
+    onSubmit(newItem, dueDate);
+    setNewItem("");
     setDueDate("");
-  };
+  }
 
   return (
-    <form onSubmit={handle} className="new-item-form">
+    <form onSubmit={handleSubmit} className="form">
       <input
-        ref={ref}
         type="text"
-        placeholder="Task name..."
-        value={title}
-        onChange={e => setTitle(e.target.value)}
+        placeholder="Enter a task..."
+        value={newItem}
+        onChange={(e) => setNewItem(e.target.value)}
       />
       <input
         type="date"
         value={dueDate}
-        onChange={e => setDueDate(e.target.value)}
+        onChange={(e) => setDueDate(e.target.value)}
       />
       <button className="btn">Add</button>
     </form>
